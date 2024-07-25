@@ -24,7 +24,7 @@ export default class HolbertonCourse {
   get students() {
     return this._students;
   }
-  
+
   set name(name) {
     if (typeof name !== 'string') {
       throw new TypeError('Name must be a string');

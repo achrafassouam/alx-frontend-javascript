@@ -1,64 +1,58 @@
 /*
-Write an interface named Student that accepts the following elements: 
-	firstName(string),
-	lastName(string),
-	age(number),
-	location(string)
-
-Create two students,
-	create an array named studentsList containing the two variables
-
-Using Vanilla Javascript, 
-	render a table and for each elements in the array,
-	append a new row to the table
-
-Each row should contain the first name of the student and the location
+firstName(string) and lastName(string). These two attributes should only be modifiable when a Teacher is first initialized
+fullTimeEmployee(boolean) this attribute should always be defined
+yearsOfExperience(number) this attribute is optional
+location(string) this attribute should always be defined
+Add the possibility to add any attribute to the Object like contract(boolean) without specifying the name of the attribute
 */
 
-interface Student {
+interface Teacher {
+  readonly firstName: string;
+  readonly lastName: string;
+  fullTimeEmployee: boolean;
+  yearsOfExperience?: number;
+  location: string;
+  contract: boolean;
+  [propName: string]: any;
+}
+
+interface Directors extends Teacher {
+  numberOfReports: number;
+}
+
+interface printTeacherFunction {
+  (firstName: string, lastName: string): string;
+}
+
+const printTeacher: printTeacherFunction = (firstName, lastName) => {
+  return `${firstName[0]}. ${lastName}`;
+};
+
+interface StudentConstructor {
+  new (firstName: string, lastName: string): StudentClassInterface;
+}
+
+interface StudentClassInterface {
+  workOnHomework(): string;
+  displayName(): string;
+}
+
+const StudentClass: StudentConstructor = class StudentClass implements StudentClassInterface {
   firstName: string;
   lastName: string;
-  age: number;
-  location: string;
-}
 
-const student1: Student = {
-  firstName: 'John',
-  lastName: 'Doe',
-  age: 20,
-  location: 'New York',
-}
+  constructor(firstName: string, lastName: string) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
 
-const student2: Student = {
-	firstName: 'Jane',
-	lastName: 'Smith',
-	age: 22,
-	location: 'Los Angeles',
-}
+  workOnHomework(): string {
+    return "Currently working";
+  }
 
-const studentsList: Student[] = [student1, student2];
+  displayName(): string {
+    return this.firstName;
+  }
+};
 
-const table = document.createElement('table');
-const tableHeader = table.createTHead();
-const headerRow = tableHeader.insertRow();
-
-const headerCell1 = document.createElement('th');
-headerCell1.textContent = 'First Name';
-headerRow.appendChild(headerCell1);
-
-const headerCell2 = document.createElement('th');
-headerCell2.textContent = 'Location';
-headerRow.appendChild(headerCell2);
-
-const tableBody = table.createTBody();
-
-studentsList.forEach((student) => {
-  const row = tableBody.insertRow();
-  const cell1 = row.insertCell();
-  cell1.textContent = student.firstName;
-
-  const cell2 = row.insertCell();
-  cell2.textContent = student.location;
-});
-
-document.body.appendChild(table);
+export { printTeacher, StudentClass };
